@@ -1,0 +1,220 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h> 
+
+typedef struct node {
+    int data;            
+    struct node* next;   
+} Node;
+
+typedef struct {
+    Node* front; 
+    Node* rear;  
+    int size;    
+} Queue;
+
+Queue* createQueue();
+bool isEmpty(Queue* q);
+void enqueue(Queue* q, int data);
+int dequeue(Queue* q);
+int peek(Queue* q);
+int getSize(Queue* q);
+void displayQueue(Queue* q);
+void freeQueue(Queue* q);
+
+
+Node* createNode(int data);
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    
+    if (newNode == NULL) {
+        printf("ERROR: Falla al asignar memoria para el nuevo nodo.\n");
+        return NULL;
+    }
+    
+    newNode->data = data;
+    newNode->next = NULL;
+    
+    return newNode;
+}
+
+Queue* createQueue() {
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    
+    if (q != NULL) {
+        q->front = NULL;
+        q->rear = NULL;
+        q->size = 0;
+    }
+    return q;
+}
+
+bool isEmpty(Queue* q) {
+    return (q->front == NULL);
+}
+
+void enqueue(Queue* q, int data) {
+    Node* newNode = createNode(data);
+    
+    if (newNode == NULL) {
+        printf("ERROR: No se pudo agregar %d por falta de memoria.\n", data);
+        return;
+    }
+    
+    if (isEmpty(q)) {
+        q->front = newNode;
+        q->rear = newNode;
+    } 
+    
+    else {
+        q->rear->next = newNode;
+        q->rear = newNode;
+    }
+    
+    q->size++;
+    printf("-> ENQUEUE: %d agregado al final.\n", data);
+}
+
+
+int dequeue(Queue* q) {
+    if (isEmpty(q)) {
+        printf("ERROR: La cola está vacía. No se puede quitar.\n");
+        return -1; 
+    }
+
+    Node* temp = q->front;
+    int dequeued_data = temp->data;
+    q->front = q->front->next;
+    
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+    
+    free(temp);
+    
+    q->size--;
+    return dequeued_data;
+}
+
+int peek(Queue* q) {
+    if (isEmpty(q)) {
+        printf("ERROR: La cola está vacía. No hay nada que ver.\n");
+        return -1;
+    }
+ 
+    return q->front->data;
+}
+
+int getSize(Queue* q) {
+    return q->size;
+}
+
+void displayQueue(Queue* q) {
+    if (isEmpty(q)) {
+        printf("La cola está vacía. \n");
+        return;
+    }
+    
+    printf("COLA (Frente -> Final): ");
+
+    Node* current = q->front;
+
+    while (current != NULL) {
+        printf("%d ", current->data);
+        current = current->next; 
+    }
+    printf("\n");
+}
+
+void freeQueue(Queue* q) {
+    Node* current = q->front;
+    Node* next_node;
+    
+    while (current != NULL) {
+        next_node = current->next; 
+        free(current);             
+        current = next_node;      
+    }
+
+    free(q);
+    printf("\nMemoria de la cola liberada. ¡Adiós! \n");
+}
+
+int main() {
+    Queue* queue = createQueue();
+    int choice, data;
+    
+    printf("Queue ADT Implementation using Linked List (está en español :) )\n");
+    
+    do {
+        printf("\nQueue Operations Menu:\n");
+        printf("1. Enqueue (Agregar al final \n");
+        printf("2. Dequeue (Quitar del frente )\n");
+        printf("3. Peek (Ver el de enfrente)\n");
+        printf("4. Check if queue is empty\n");
+        printf("5. Get queue size\n");
+        printf("6. Display queue\n");
+        printf("7. Exit\n");
+        printf("Enter your choice: ");
+        
+        if (scanf("%d", &choice) != 1) {
+             while (getchar() != '\n');
+             choice = -1; 
+        }
+        
+        switch(choice) {
+            case 1:
+                printf("Enter data to enqueue: ");
+                scanf("%d", &data);
+                enqueue(queue, data);
+                break;
+                
+            case 2:
+                if (!isEmpty(queue)) {
+                    data = dequeue(queue);
+                    printf("DEQUEUE: Elemento quitado: %d\n", data);
+                } else {
+                    printf("Cola vacía :) No se puede quitar nada.\n");
+                }
+                break;
+                
+            case 3:
+                if (!isEmpty(queue)) {
+                    data = peek(queue);
+                    printf("PEEK: El elemento del frente es: %d\n", data);
+                } else {
+                    printf("Cola vacía! No hay elemento al frente.\n");
+                }
+                break;
+                
+            case 4:
+                if (isEmpty(queue)) {
+                    printf(" La cola está vacía.\n");
+                } else {
+                    printf(" La cola NO está vacía.\n");
+                }
+                break;
+                
+            case 5:
+                printf("Tamaño actual de la cola: %d\n", getSize(queue));
+                break;
+                
+            case 6:
+                displayQueue(queue);
+                break;
+                
+            case 7:
+                printf("Saliendo del programa...\n");
+                break;
+                
+            default:
+                printf("Opción inválida Por favor, intenta de nuevo.\n");
+                break;
+        }
+    } while(choice != 7);
+    
+    freeQueue(queue);
+    
+    return 0;
+}
