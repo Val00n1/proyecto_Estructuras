@@ -1,0 +1,79 @@
+// Global declare
+CONSTANT MAX_SIZE = 100
+DECLARARE queue[MAX_SIZE] as int 
+DECLARARE front = 0 as int // Front 
+DECLARARE rear = -1 as int// Rear 
+DECLARARE size = 0 as int // Actual size
+// Operations 
+while true
+show"1. Enqueue (Add)"
+show "2. Dequeue ( Delete)"
+show "3. Front (Look first value of queue)"
+show "4. Show cola"
+show "5. Exit"
+show "Choose option:"
+read option
+switch to make cases
+Case 1:
+print "value to add:"
+read value
+result= enqueue(value)
+if result then print “added”
+else 
+print “queue full”
+close key 
+Case 2:
+result = dequeue()
+if result !=null_value then 
+print "deleted:", result
+else
+show "empty queue"
+close key
+Case 3:
+show_queue()
+Case 4:
+exit
+Other case:
+print "invalid option"
+close key
+close key
+close key 
+// Add element to queue
+function enqueue(value as int) true
+if  size == MAX_SIZE then false because queue is full
+end if
+rear = (rear + 1) % MAX_SIZE // Circle
+queue[rear] = valor
+size = size + 1
+return true
+end function, close key
+// Delete and return first element
+function dequeue() 
+if size == 0 then
+nothing
+close key
+else declare temp = queue[front] as an int 
+front = (front + 1) % MAX_SIZE // Circle
+size = size - 1
+return temp
+end funtion
+// Show elements in the queue
+function show_queue()
+if size == 0 then
+print "empty  queue!"
+close key
+else print "Elements in queue:"
+declare i, index as an int
+index = front
+from i until size do 
+print queue[index]
+index = (index + 1) % MAX_SIZE
+end and close key 
+// Verify if the queue is empty
+function is_empty() 
+get size == 0
+close key
+// Verify if queue is full
+function is_full()
+get size == MAX_SIZE
+close keys
