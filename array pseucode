@@ -1,0 +1,36 @@
+//1. declare array
+declare my_array[size]
+// other way to declare option A
+declare array1[5] as int = {10, 20, 30, 40, 50} //example
+// Option B
+declare array2[3] as int //example 2
+array2[0] = 100
+array2[1] = 200
+array2[2] = 300
+// 3. run array
+Declare i as an int 
+run i=0 until size_array-1 do write “element”, i, “:”, my_array[i]
+close this key
+// 4. common operations
+// Sum elements
+declare sum= 0 as an int
+from i=0 until size_array-1 do
+sum = sum + my_array[i]
+close key 
+// Find max value
+declare max = my_array[0] as an int
+from i=1 until array_size-1 do 
+if my_array[i] > max then
+max = my_array[i]
+close key 
+// search element 
+declare search as an int 
+search= false 
+from i=0 until size_array-1 do 
+if my_array[i] == search then 
+search = verdadero 
+end bucle
+close key
+// show result
+print array 
+End close last key 
